@@ -1,8 +1,8 @@
 import {
   Body,
+  ConsoleLogger,
   Controller,
   Get,
-  Logger,
   Post,
   Req,
   UseGuards,
@@ -14,7 +14,7 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @Controller('auth')
 export class AuthController {
-  private logger = new Logger('AuthController');
+  private ConsoleLogger = new ConsoleLogger('AuthController');
   constructor(
     private authService: AuthService,
     private configService: ConfigService,
@@ -35,7 +35,7 @@ export class AuthController {
   @Get('test')
   @UseGuards(AuthGuard())
   test(@Req() req) {
-    this.logger.debug(typeof this.configService.get('DB_PORT'));
+    this.ConsoleLogger.debug(typeof this.configService.get('DB_PORT'));
     // after token validation JwtStrategy.validate provide req.user with some information
     return req.user;
   }

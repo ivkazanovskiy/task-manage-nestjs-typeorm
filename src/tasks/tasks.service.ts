@@ -1,25 +1,17 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GetUser } from 'src/auth/get-user.decorator';
-import { User } from 'src/auth/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { User } from '../auth/user.entity';
+import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TasksFilterDto } from './dto/get-tasks-filter.dto';
 import { ETaskStatus } from './task-status.enum';
 import { Task } from './task.entity';
-import { TasksRepository } from './task.repository';
 
 @Injectable()
 export class TasksService {
-  //  Data Mapper approach
-  private tasksRepository: typeof TasksRepository & Repository<Task>;
-  constructor(@InjectRepository(Task) baseRepository: Repository<Task>) {
-    this.tasksRepository = baseRepository.extend(TasksRepository);
-  }
+  constructor(
+    @InjectRepository(Task) private tasksRepository: Repository<Task>,
+  ) {}
 
   async getAllTasks(
     tasksFilterDto: TasksFilterDto,

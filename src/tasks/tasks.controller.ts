@@ -3,7 +3,7 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
+  ConsoleLogger,
   Param,
   Patch,
   Post,
@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/auth/get-user.decorator';
-import { User } from 'src/auth/user.entity';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
@@ -23,7 +23,7 @@ import { TasksService } from './tasks.service';
 @Controller('tasks')
 @UseGuards(AuthGuard()) // apply token validation to whole routes
 export class TasksController {
-  private logger = new Logger('TasksController');
+  private ConsoleLogger = new ConsoleLogger('TasksController');
 
   constructor(
     private readonly tasksService: TasksService,
