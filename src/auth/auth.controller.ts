@@ -1,11 +1,24 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  private logger = new Logger('AuthController');
+  constructor(
+    private authService: AuthService,
+    private configService: ConfigService,
+  ) {}
 
   @Post('/signin')
   signIn(
@@ -22,6 +35,7 @@ export class AuthController {
   @Get('test')
   @UseGuards(AuthGuard())
   test(@Req() req) {
+    this.logger.debug(typeof this.configService.get('DB_PORT'));
     // after token validation JwtStrategy.validate provide req.user with some information
     return req.user;
   }
